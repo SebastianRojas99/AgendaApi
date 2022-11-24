@@ -35,16 +35,19 @@ namespace AgendaApi.Data.Repository.Implementations
         {
 
             _context.Users.Add(_mapper.Map<User>(dto));
+            _context.SaveChanges();
         }
 
         public void Update(CreateAndUpdateUserDto dto)
         {
             _context.Users.Update(_mapper.Map<User>(dto));
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
             _context.Users.Remove(_context.Users.Single(u => u.Id == id));
+            _context.SaveChanges();
         }
 
         public void Archive(int id)
@@ -55,6 +58,7 @@ namespace AgendaApi.Data.Repository.Implementations
                 user.State = State.Archived;
                 _context.Update(user);
             }
+            _context.SaveChanges();
         }
     }
 }

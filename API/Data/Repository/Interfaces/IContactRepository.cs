@@ -5,8 +5,8 @@ namespace AgendaApi.Data.Repository.Interfaces
 {
     public interface IContactRepository
     {
-        public List<Contact> GetAll();
-        public void Create(CreateAndUpdateContact dto);
+        public List<Contact> GetAllByUser(int id);
+        public void Create(CreateAndUpdateContact dto, int id);
         public void Update(CreateAndUpdateContact dto);
         public void Delete(int id);
     }

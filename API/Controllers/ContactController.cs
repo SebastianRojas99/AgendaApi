@@ -26,66 +26,47 @@ namespace AgendaApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-
-            return Ok(_contactRepository.GetAll());
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            return Ok(_contactRepository.GetAllByUser(userId));
         }
 
         [HttpGet]
         [Route("{Id}")]
         public IActionResult GetOne(int Id)
         {
-            return Ok(_contactRepository.GetAll().Where(x => x.Id == Id));
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            return Ok(_contactRepository.GetAllByUser(userId).Where(x => x.Id == Id));
         }
 
 
         [HttpPost]
         public IActionResult CreateContact(CreateAndUpdateContact createContactDto)
         {
-            try
-            {
-                _contactRepository.Create(createContactDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            _contactRepository.Create(createContactDto,userId);
             return Created("Created", createContactDto);
         }
 
         [HttpPut]
         public IActionResult UpdateContact(CreateAndUpdateContact dto)
         {
-            try
-            {
-                _contactRepository.Update(dto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            _contactRepository.Update(dto);
             return NoContent();
         }
         
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            try
+            var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
+            if (role.Value == "Admin")
             {
-                var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
-                if (role.Value == "Admin")
-                {
-                    _userRepository.Delete(id);
-                }
-                else
-                {
-                    _userRepository.Archive(id);
-                }
-                return NoContent();
+                _userRepository.Delete(id);
             }
-            catch(Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                _userRepository.Archive(id);
             }
+            return NoContent();
         }
 
     }
