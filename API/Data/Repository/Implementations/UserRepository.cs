@@ -1,8 +1,7 @@
-﻿using AgendaApi.Entities;
-using AgendaApi.Models;
-using AgendaApi.Data;
+﻿using AgendaApi.Data;
 using AgendaApi.Data.Repository.Interfaces;
-using AutoMapper;
+using AgendaApi.Entities;
+using AgendaApi.Models;
 using AgendaApi.Models.Enum;
 
 namespace AgendaApi.Data.Repository.Implementations
@@ -10,11 +9,9 @@ namespace AgendaApi.Data.Repository.Implementations
     public class UserRepository : IUserRepository
     {
         private AgendaContext _context;
-        private readonly IMapper _mapper;
-        public UserRepository(AgendaContext context, IMapper mapper)
+        public UserRepository(AgendaContext context)
         {
             _context = context;
-            _mapper = mapper; 
         }
         public User? GetById(int userId)
         {
@@ -23,7 +20,7 @@ namespace AgendaApi.Data.Repository.Implementations
 
         public User? ValidateUser(AuthenticationRequestBody authRequestBody)
         {
-            return _context.Users.FirstOrDefault(p => p.UserName == authRequestBody.UserName && p.Password == authRequestBody.Password);
+            return _context.Users.FirstOrDefault(p => p.UserName == authRequestBody.NombreDeUsuario && p.Password == authRequestBody.Contrasenia);
         }
 
         public List<User> GetAll()

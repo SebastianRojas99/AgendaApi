@@ -18,30 +18,27 @@ namespace AgendaApi.Data
             User karen = new User()
             {
                 Id = 1,
-                Name = "Karen",
+                FirstName = "Karen",
                 LastName = "Lasot",
                 Password = "Pa$$w0rd",
-                Email = "karenbailapiola@gmail.com",
-                UserName = "karenpiola",
+                UserName = "karenbailapiola@gmail.com",
                 Rol = Models.Enum.Rol.Admin,
             };
             User luis = new User()
             {
                 Id = 2,
-                Name = "Luis Gonzalez",
+                FirstName = "Luis Gonzalez",
                 LastName = "Gonzales",
                 Password = "lamismadesiempre",
-                Email = "elluismidetotoras@gmail.com",
-                UserName = "luismitoto"
+                UserName = "elluismidetotoras@gmail.com",
             };
 
             Contact jaimitoC = new Contact()
             {
                 Id = 1,
                 Name = "Jaimito",
-                CelularNumber = 341457896,
+                Number = "341457896",
                 Description = "Plomero",
-                TelephoneNumber = null,
                 UserId = karen.Id,
             };
 
@@ -49,9 +46,8 @@ namespace AgendaApi.Data
             {
                 Id = 2,
                 Name = "Pepe",
-                CelularNumber = 34156978,
+                Number = "34156978",
                 Description = "Papa",
-                TelephoneNumber = 422568,
                 UserId = luis.Id,
             };
 
@@ -59,17 +55,16 @@ namespace AgendaApi.Data
             {
                 Id = 3,
                 Name = "Maria",
-                CelularNumber = 011425789,
+                Number = "341457896",
                 Description = "Jefa",
-                TelephoneNumber = null,
                 UserId = karen.Id,
             };
 
             modelBuilder.Entity<User>().HasData(
-                karen,luis);
+                karen, luis);
 
             modelBuilder.Entity<Contact>().HasData(
-                 jaimitoC,pepeC,mariaC
+                 jaimitoC, pepeC, mariaC
                  );
 
             modelBuilder.Entity<User>()

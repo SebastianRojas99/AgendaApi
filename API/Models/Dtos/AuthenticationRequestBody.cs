@@ -5,8 +5,8 @@ namespace AgendaApi.Models
     public class AuthenticationRequestBody
     {
         [Required]
-        public string? UserName { get; set; }
+        public string? NombreDeUsuario { get; set; }
         [Required]
-        public string? Password { get; set; }
+        public string? Contrasenia { get; set; }
     }
 }

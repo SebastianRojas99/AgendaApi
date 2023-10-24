@@ -1,15 +1,10 @@
-using AgendaApi.Controllers;
-using AgendaApi.Data.Repository;
 using AgendaApi.Data;
+using AgendaApi.Data.Repository.Implementations;
+using AgendaApi.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using System.Text.Json.Serialization;
-using AgendaApi.Data.Repository.Interfaces;
-using AutoMapper;
-using AgendaApi.Profiles;
-using AgendaApi.Data.Repository.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,15 +54,7 @@ builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntentica
 );
 
 
-var config = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new ContactProfile());
-    cfg.AddProfile(new UserProfile());
-});
-var mapper = config.CreateMapper();
-
 #region DependencyInjections
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 #endregion

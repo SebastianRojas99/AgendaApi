@@ -5,6 +5,7 @@ using AgendaApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace AgendaApi.Controllers
@@ -32,10 +33,10 @@ namespace AgendaApi.Controllers
 
         [HttpGet]
         [Route("{Id}")]
-        public IActionResult GetOne(int Id)
+        public IActionResult GetOne(int id)
         {
             int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
-            return Ok(_contactRepository.GetAllByUser(userId).Where(x => x.Id == Id));
+            return Ok(_contactRepository.GetAllByUser(userId).Where(x => x.Id == id));
         }
 
 
@@ -43,17 +44,18 @@ namespace AgendaApi.Controllers
         public IActionResult CreateContact(CreateAndUpdateContact createContactDto)
         {
             int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
-            _contactRepository.Create(createContactDto,userId);
+            _contactRepository.Create(createContactDto, userId);
             return Created("Created", createContactDto);
         }
 
         [HttpPut]
-        public IActionResult UpdateContact(CreateAndUpdateContact dto)
+        [Route("{Id}")]
+        public IActionResult UpdateContact(CreateAndUpdateContact dto, int id)
         {
             _contactRepository.Update(dto);
             return NoContent();
         }
-        
+
         [HttpDelete]
         public IActionResult Delete(int id)
         {

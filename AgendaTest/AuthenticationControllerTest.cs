@@ -23,18 +23,17 @@ namespace AgendaTest
             services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
             .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
                             {
-                    options.TokenValidationParameters = new()
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = "https://localhost:52852",
-                        ValidAudience = "agendaapi",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("thisisthesecretforgeneratingakey(mustbeatleast32bitlong)"))
-                    };
-                }
+                                options.TokenValidationParameters = new()
+                                {
+                                    ValidateIssuer = true,
+                                    ValidateAudience = true,
+                                    ValidateIssuerSigningKey = true,
+                                    ValidIssuer = "https://localhost:52852",
+                                    ValidAudience = "agendaapi",
+                                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("thisisthesecretforgeneratingakey(mustbeatleast32bitlong)"))
+                                };
+                            }
             );
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IUserRepository, UserRepository>();
         }
     }
@@ -43,8 +42,8 @@ namespace AgendaTest
         private readonly IUserRepository _userRepository;
         private readonly ConfigurationManager _configuration;
         private readonly AuthenticationController _controller;
-        
-        public AuthenticationControllerTest( IUserRepository userRepository)
+
+        public AuthenticationControllerTest(IUserRepository userRepository)
         {
             _userRepository = userRepository;
             _configuration = new ConfigurationManager();

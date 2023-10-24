@@ -1,19 +1,16 @@
 ﻿using AgendaApi.Data.Repository.Interfaces;
 using AgendaApi.Entities;
 using AgendaApi.Models;
-using AutoMapper;
 
 namespace AgendaApi.Data.Repository.Implementations
 {
     public class ContactRepository : IContactRepository
     {
         private readonly AgendaContext _context;
-        private readonly IMapper _mapper;
 
-        public ContactRepository(AgendaContext context, IMapper autoMapper)
+        public ContactRepository(AgendaContext context)
         {
             _context = context;
-            _mapper = autoMapper;
         }
         public List<Contact> GetAllByUser(int id)
         {
@@ -21,18 +18,38 @@ namespace AgendaApi.Data.Repository.Implementations
             return _context.Contacts.Where(c => c.User.Id == id).ToList();
         }
 
-        public void Create(CreateAndUpdateContact dto, int id)
+        public void Create(CreateAndUpdateContact dto, int loggedUserId)
         {
-            Contact contact = _mapper.Map<Contact>(dto);
-            contact.UserId = id;
+            Contact contact = new Contact()
+            {
+                Email = dto.Email,
+                Image = dto.Imagen,
+                Number = dto.Telefono,
+                Company = dto.Empresa,
+                Address = dto.Direccion,
+                LastName = dto.Apellido,
+                Name = dto.Nombre,
+                UserId = loggedUserId,
+            };
             _context.Contacts.Add(contact);
             _context.SaveChanges();
         }
 
-        public void Update(CreateAndUpdateContact dto)
+        public void Update(CreateAndUpdateContact dto, int contactId)
         {
-            _context.Contacts.Update(_mapper.Map<Contact>(dto));
-            _context.SaveChanges();
+            Contact? contact = _context.Contacts.SingleOrDefault(contact => contact.Id == contactId);
+            if (contact is not null)
+            {
+                contact.Email = dto.Email;
+                contact.Image = dto.Imagen;
+                contact.Number = dto.Telefono;
+                contact.Company = dto.Empresa;
+                contact.Address = dto.Direccion;
+                contact.LastName = dto.Apellido;
+                contact.Name = dto.Nombre;
+                _context.SaveChanges();
+            }
+
         }
         public void Delete(int id)
         {
