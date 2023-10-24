@@ -1,8 +1,8 @@
 using AgendaApi.Controllers;
 using AgendaApi.Data;
-using AgendaApi.Data.Repository.Implementations;
-using AgendaApi.Data.Repository.Interfaces;
 using AgendaApi.Models;
+using AgendaApi.Services.Implementations;
+using AgendaApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,20 +34,20 @@ namespace AgendaTest
                                 };
                             }
             );
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
     public class AuthenticationControllerTest
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
         private readonly ConfigurationManager _configuration;
         private readonly AuthenticationController _controller;
 
-        public AuthenticationControllerTest(IUserRepository userRepository)
+        public AuthenticationControllerTest(IUserService userRepository)
         {
-            _userRepository = userRepository;
+            _userService = userRepository;
             _configuration = new ConfigurationManager();
-            _controller = new AuthenticationController(_configuration, _userRepository);
+            _controller = new AuthenticationController(_configuration, _userService);
 
         }
 

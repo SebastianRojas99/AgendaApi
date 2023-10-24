@@ -37,6 +37,9 @@ namespace AgendaApi.Data
             {
                 Id = 1,
                 Name = "Jaimito",
+                Company = "PwC",
+                LastName = "Perez",
+                Email = "jpreze@pwc.com",
                 Number = "341457896",
                 Description = "Plomero",
                 UserId = karen.Id,
@@ -46,6 +49,9 @@ namespace AgendaApi.Data
             {
                 Id = 2,
                 Name = "Pepe",
+                Company = "Austral",
+                LastName = "Ramirez",
+                Email = "pramirez@austral.com",
                 Number = "34156978",
                 Description = "Papa",
                 UserId = luis.Id,
@@ -55,6 +61,9 @@ namespace AgendaApi.Data
             {
                 Id = 3,
                 Name = "Maria",
+                Company = "google",
+                LastName = "paez",
+                Email = "mpaez@google.com",
                 Number = "341457896",
                 Description = "Jefa",
                 UserId = karen.Id,

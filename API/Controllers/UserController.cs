@@ -1,7 +1,6 @@
-﻿using AgendaApi.Data.Repository.Implementations;
-using AgendaApi.Data.Repository.Interfaces;
-using AgendaApi.Entities;
+﻿using AgendaApi.Entities;
 using AgendaApi.Models;
+using AgendaApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,28 +11,27 @@ namespace AgendaApi.Controllers
     [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly IUserService _userService;
+        public UserController(IUserService userRepository)
         {
-            _userRepository = userRepository;
+            _userService = userRepository;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_userRepository.GetAll());
+            return Ok(_userService.GetAll());
         }
 
-        [HttpGet]
-        [Route("{Id}")]
-        public IActionResult GetOneById(int Id)
+        [HttpGet("{id}")]
+        public IActionResult GetOneById(int id)
         {
-            if (Id == 0)
+            if (id == 0)
             {
                 return BadRequest("El ID ingresado debe ser distinto de 0");
             }
 
-            User? user = _userRepository.GetById(Id);
+            User? user = _userService.GetById(id);
 
             if (user is null)
             {
@@ -60,7 +58,7 @@ namespace AgendaApi.Controllers
         {
             try
             {
-                _userRepository.Create(dto);
+                _userService.Create(dto);
             }
             catch (Exception ex)
             {
@@ -69,12 +67,16 @@ namespace AgendaApi.Controllers
             return Created("Created", dto);
         }
 
-        [HttpPut]
-        public IActionResult UpdateUser(CreateAndUpdateUserDto dto)
+        [HttpPut("{userId}")]
+        public IActionResult UpdateUser(CreateAndUpdateUserDto dto, int userId)
         {
+            if (!_userService.CheckIfUserExists(userId))
+            {
+                return NotFound();
+            }
             try
             {
-                _userRepository.Update(dto);
+                _userService.Update(dto, userId);
             }
             catch (Exception ex)
             {
@@ -86,7 +88,7 @@ namespace AgendaApi.Controllers
         [HttpDelete]
         public IActionResult DeleteUser(int id)
         {
-            User? user = _userRepository.GetById(id);
+            User? user = _userService.GetById(id);
             if (user is null)
             {
                 return BadRequest("El cliente que intenta eliminar no existe");
@@ -94,11 +96,11 @@ namespace AgendaApi.Controllers
 
             if (user.FirstName != "Admin")
             {
-                _userRepository.Delete(id);
+                _userService.Delete(id);
             }
             else
             {
-                _userRepository.Archive(id);
+                _userService.Archive(id);
             }
             return NoContent();
         }

@@ -1,7 +1,6 @@
-﻿using AgendaApi.Data.Repository.Implementations;
-using AgendaApi.Data.Repository.Interfaces;
-using AgendaApi.Entities;
+﻿using AgendaApi.Entities;
 using AgendaApi.Models;
+using AgendaApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,28 +14,27 @@ namespace AgendaApi.Controllers
     [Authorize]
     public class ContactController : ControllerBase
     {
-        private readonly IContactRepository _contactRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IContactService _contactService;
+        private readonly IUserService _userService;
 
-        public ContactController(IContactRepository contactRepository, IUserRepository userRepository)
+        public ContactController(IContactService contactService, IUserService userRepository)
         {
-            _contactRepository = contactRepository;
-            _userRepository = userRepository;
+            _contactService = contactService;
+            _userService = userRepository;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
             int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
-            return Ok(_contactRepository.GetAllByUser(userId));
+            return Ok(_contactService.GetAllByUser(userId));
         }
 
-        [HttpGet]
-        [Route("{Id}")]
+        [HttpGet("{id}")]
         public IActionResult GetOne(int id)
         {
             int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
-            return Ok(_contactRepository.GetAllByUser(userId).Where(x => x.Id == id));
+            return Ok(_contactService.GetAllByUser(userId).Where(x => x.Id == id));
         }
 
 
@@ -44,15 +42,15 @@ namespace AgendaApi.Controllers
         public IActionResult CreateContact(CreateAndUpdateContact createContactDto)
         {
             int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
-            _contactRepository.Create(createContactDto, userId);
+            _contactService.Create(createContactDto, userId);
             return Created("Created", createContactDto);
         }
 
         [HttpPut]
         [Route("{Id}")]
-        public IActionResult UpdateContact(CreateAndUpdateContact dto, int id)
+        public IActionResult UpdateContact(CreateAndUpdateContact dto, int contactId)
         {
-            _contactRepository.Update(dto);
+            _contactService.Update(dto, contactId);
             return NoContent();
         }
 
@@ -62,11 +60,11 @@ namespace AgendaApi.Controllers
             var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
             if (role.Value == "Admin")
             {
-                _userRepository.Delete(id);
+                _userService.Delete(id);
             }
             else
             {
-                _userRepository.Archive(id);
+                _userService.Archive(id);
             }
             return NoContent();
         }

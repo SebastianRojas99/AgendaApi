@@ -1,14 +1,15 @@
-﻿using AgendaApi.Data.Repository.Interfaces;
+﻿using AgendaApi.Data;
 using AgendaApi.Entities;
 using AgendaApi.Models;
+using AgendaApi.Services.Interfaces;
 
-namespace AgendaApi.Data.Repository.Implementations
+namespace AgendaApi.Services.Implementations
 {
-    public class ContactRepository : IContactRepository
+    public class ContactService : IContactService
     {
         private readonly AgendaContext _context;
 
-        public ContactRepository(AgendaContext context)
+        public ContactService(AgendaContext context)
         {
             _context = context;
         }
