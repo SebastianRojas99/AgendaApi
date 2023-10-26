@@ -3,6 +3,7 @@ using AgendaApi.Entities;
 using AgendaApi.Models;
 using AgendaApi.Models.Enum;
 using AgendaApi.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgendaApi.Services.Implementations
 {
@@ -15,7 +16,7 @@ namespace AgendaApi.Services.Implementations
         }
         public User? GetById(int userId)
         {
-            return _context.Users.SingleOrDefault(u => u.Id == userId);
+            return _context.Users.Include(u => u.Contacts).SingleOrDefault(u => u.Id == userId);
         }
 
         public User? ValidateUser(AuthenticationRequestBody authRequestBody)

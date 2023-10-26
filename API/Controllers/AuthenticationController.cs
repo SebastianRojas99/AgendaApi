@@ -16,10 +16,10 @@ namespace AgendaApi.Controllers
         private readonly IConfiguration _config;
         private readonly IUserService _userService;
 
-        public AuthenticationController(IConfiguration config, IUserService userRepository)
+        public AuthenticationController(IConfiguration config, IUserService userService)
         {
             _config = config; //Hacemos la inyección para poder usar el appsettings.json
-            this._userService = userRepository;
+            this._userService = userService;
 
         }
 
