@@ -22,7 +22,7 @@ namespace AgendaApi.Data
                 LastName = "Lasot",
                 Password = "Pa$$w0rd",
                 UserName = "karenbailapiola@gmail.com",
-                Rol = Models.Enum.Rol.Admin,
+                Role = Models.Enum.Role.Admin,
             };
             User luis = new User()
             {

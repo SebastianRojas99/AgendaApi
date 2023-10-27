@@ -1,6 +1,7 @@
 ﻿using AgendaApi.Data;
 using AgendaApi.Entities;
 using AgendaApi.Models;
+using AgendaApi.Models.Dtos;
 using AgendaApi.Models.Enum;
 using AgendaApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -19,26 +20,34 @@ namespace AgendaApi.Services.Implementations
             return _context.Users.Include(u => u.Contacts).SingleOrDefault(u => u.Id == userId);
         }
 
-        public User? ValidateUser(AuthenticationRequestBody authRequestBody)
+        public User? ValidateUser(AuthenticationRequestDto authRequestBody)
         {
-            return _context.Users.FirstOrDefault(p => p.UserName == authRequestBody.NombreDeUsuario && p.Password == authRequestBody.Contrasenia);
+            return _context.Users.FirstOrDefault(p => p.UserName == authRequestBody.UserName && p.Password == authRequestBody.Password);
         }
 
-        public List<User> GetAll()
+        public List<UserDto> GetAll()
         {
-            return _context.Users.ToList();
+            return _context.Users.Select(u => new UserDto()
+            {
+                FirstName = u.FirstName,
+                LastName = u.LastName,  
+                Id = u.Id,
+                Role = u.Role,
+                State = u.State,
+                UserName = u.UserName
+            }).ToList();
         }
 
         public void Create(CreateAndUpdateUserDto dto)
         {
             User newUser = new User()
             {
-                FirstName = dto.Nombre,
-                LastName = dto.Apellido,
-                Password = dto.Contrasenia,
-                UserName = dto.NombreDeUsuario,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Password = dto.Password,
+                UserName = dto.UserName,
                 State = State.Active,
-                Rol = Rol.User,
+                Role = Role.User,
                 Contacts = new List<Contact>()
             };
             _context.Users.Add(newUser);
@@ -55,10 +64,10 @@ namespace AgendaApi.Services.Implementations
         public void Update(CreateAndUpdateUserDto dto, int userId)
         {
             User userToUpdate = _context.Users.First(u => u.Id == userId);
-            userToUpdate.FirstName = dto.Nombre;
+            userToUpdate.FirstName = dto.FirstName;
             //userToUpdate.UserName = dto.NombreDeUsuario; //Esto no deberíamos actualizarlo, lo mejor es crear un dto para actualización que no contenga este campo.
-            userToUpdate.LastName = dto.Apellido;
-            userToUpdate.Password = dto.Contrasenia;
+            userToUpdate.LastName = dto.LastName;
+            userToUpdate.Password = dto.Password;
             _context.SaveChanges();
         }
 

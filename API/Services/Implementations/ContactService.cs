@@ -2,6 +2,7 @@
 using AgendaApi.Entities;
 using AgendaApi.Models;
 using AgendaApi.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgendaApi.Services.Implementations
 {
@@ -16,7 +17,7 @@ namespace AgendaApi.Services.Implementations
         public List<Contact> GetAllByUser(int id)
         {
 
-            return _context.Contacts.Where(c => c.User.Id == id).ToList();
+            return _context.Contacts.Include(c => c.User).Where(c => c.User.Id == id).ToList();
         }
 
         public void Create(CreateAndUpdateContact dto, int loggedUserId)
@@ -24,12 +25,12 @@ namespace AgendaApi.Services.Implementations
             Contact contact = new Contact()
             {
                 Email = dto.Email,
-                Image = dto.Imagen,
-                Number = dto.Telefono,
-                Company = dto.Empresa,
-                Address = dto.Direccion,
-                LastName = dto.Apellido,
-                Name = dto.Nombre,
+                Image = dto.Image,
+                Number = dto.Number,
+                Company = dto.Company,
+                Address = dto.Address,
+                LastName = dto.LastName,
+                Name = dto.FirstName,
                 UserId = loggedUserId,
             };
             _context.Contacts.Add(contact);
@@ -42,12 +43,12 @@ namespace AgendaApi.Services.Implementations
             if (contact is not null)
             {
                 contact.Email = dto.Email;
-                contact.Image = dto.Imagen;
-                contact.Number = dto.Telefono;
-                contact.Company = dto.Empresa;
-                contact.Address = dto.Direccion;
-                contact.LastName = dto.Apellido;
-                contact.Name = dto.Nombre;
+                contact.Image = dto.Image;
+                contact.Number = dto.Number;
+                contact.Company = dto.Company;
+                contact.Address = dto.Address;
+                contact.LastName = dto.LastName;
+                contact.Name = dto.FirstName;
                 _context.SaveChanges();
             }
 

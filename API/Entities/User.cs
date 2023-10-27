@@ -18,6 +18,6 @@ namespace AgendaApi.Entities
         public List<Contact> Contacts { get; set; }
         public State State { get; set; } = State.Active;
 
-        public Rol Rol { get; set; } = Rol.User;
+        public Role Role { get; set; } = Role.User;
     }
 }

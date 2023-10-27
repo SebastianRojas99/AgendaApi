@@ -38,15 +38,14 @@ namespace AgendaApi.Controllers
                 return NotFound();
             }
 
-            var dto = new GetUserByIdResponse()
+            var dto = new GetUserByIdDto()
             {
-                Apellido = user.LastName,
-                Nombre = user.FirstName,
-                NombreDeUsuario = user.UserName,
-                Estado = user.State,
+                LastName = user.LastName,
+                FirstName = user.FirstName,
+                UserName = user.UserName,
+                State = user.State,
                 Id = user.Id,
-                Contactos = user.Contacts,
-                Rol = user.Rol
+                Role = user.Role
             };
 
             return Ok(dto);

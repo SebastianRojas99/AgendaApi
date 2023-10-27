@@ -11,13 +11,13 @@ namespace AgendaApi.Models
         para transportar datos desde el back a una capa del front ya que nos permite adaptarnos
         y tener flexibilidad a la hora de responder a las requests*/
         [Required]
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public string? Direccion { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string? Address { get; set; }
         public string Email { get; set; }
-        public string? Imagen { get; set; }
-        public string Telefono { get; set; }
-        public string? Empresa { get; set; }
+        public string? Image { get; set; }
+        public string Number { get; set; }
+        public string? Company { get; set; }
         public User? User;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AgendaApi.Entities;
 using AgendaApi.Models;
+using AgendaApi.Models.Dtos;
 
 namespace AgendaApi.Services.Interfaces
 {
@@ -9,9 +10,9 @@ namespace AgendaApi.Services.Interfaces
         bool CheckIfUserExists(int userId);
         void Create(CreateAndUpdateUserDto dto);
         void Delete(int id);
-        List<User> GetAll();
+        List<UserDto> GetAll();
         User? GetById(int userId);
         void Update(CreateAndUpdateUserDto dto, int userId);
-        User? ValidateUser(AuthenticationRequestBody authRequestBody);
+        User? ValidateUser(AuthenticationRequestDto authRequestBody);
     }
 }

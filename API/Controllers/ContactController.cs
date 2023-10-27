@@ -26,14 +26,14 @@ namespace AgendaApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier"))!.Value);
             return Ok(_contactService.GetAllByUser(userId));
         }
 
         [HttpGet("{id}")]
         public IActionResult GetOne(int id)
         {
-            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier"))!.Value);
             return Ok(_contactService.GetAllByUser(userId).Where(x => x.Id == id));
         }
 
@@ -41,7 +41,7 @@ namespace AgendaApi.Controllers
         [HttpPost]
         public IActionResult CreateContact(CreateAndUpdateContact createContactDto)
         {
-            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier"))!.Value);
             _contactService.Create(createContactDto, userId);
             return Created("Created", createContactDto);
         }
@@ -58,7 +58,7 @@ namespace AgendaApi.Controllers
         public IActionResult Delete(int id)
         {
             var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
-            if (role.Value == "Admin")
+            if (role!.Value == "Admin")
             {
                 _userService.Delete(id);
             }

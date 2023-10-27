@@ -1,6 +1,6 @@
 ﻿namespace AgendaApi.Models.Enum
 {
-    public enum Rol
+    public enum Role
     {
         Admin,
         User,

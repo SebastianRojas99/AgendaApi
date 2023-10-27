@@ -4,7 +4,7 @@
 
 namespace AgendaApi.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,7 +19,7 @@ namespace AgendaApi.Migrations
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", nullable: false),
                     State = table.Column<int>(type: "INTEGER", nullable: false),
-                    Rol = table.Column<int>(type: "INTEGER", nullable: false)
+                    Role = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,12 +54,12 @@ namespace AgendaApi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "FirstName", "LastName", "Password", "Rol", "State", "UserName" },
+                columns: new[] { "Id", "FirstName", "LastName", "Password", "Role", "State", "UserName" },
                 values: new object[] { 1, "Karen", "Lasot", "Pa$$w0rd", 0, 0, "karenbailapiola@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "FirstName", "LastName", "Password", "Rol", "State", "UserName" },
+                columns: new[] { "Id", "FirstName", "LastName", "Password", "Role", "State", "UserName" },
                 values: new object[] { 2, "Luis Gonzalez", "Gonzales", "lamismadesiempre", 1, 0, "elluismidetotoras@gmail.com" });
 
             migrationBuilder.InsertData(

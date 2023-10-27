@@ -105,7 +105,7 @@ namespace AgendaApi.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Rol")
+                    b.Property<int>("Role")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("State")
@@ -126,7 +126,7 @@ namespace AgendaApi.Migrations
                             FirstName = "Karen",
                             LastName = "Lasot",
                             Password = "Pa$$w0rd",
-                            Rol = 0,
+                            Role = 0,
                             State = 0,
                             UserName = "karenbailapiola@gmail.com"
                         },
@@ -136,7 +136,7 @@ namespace AgendaApi.Migrations
                             FirstName = "Luis Gonzalez",
                             LastName = "Gonzales",
                             Password = "lamismadesiempre",
-                            Rol = 1,
+                            Role = 1,
                             State = 0,
                             UserName = "elluismidetotoras@gmail.com"
                         });
